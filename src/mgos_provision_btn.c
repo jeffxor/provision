@@ -34,6 +34,7 @@ void mgos_provision_reset(void) {
 }
 
 static void button_timer_cb(void *arg) {
+  
   int pin = mgos_sys_config_get_provision_btn_pin();
   int hold = mgos_sys_config_get_provision_btn_hold_ms();
   enum mgos_gpio_pull_type pull =
@@ -42,10 +43,12 @@ static void button_timer_cb(void *arg) {
   int n = 0; /* Number of times the button is reported down */
   for (int i = 0; i < 10; i++) {
     int level = mgos_gpio_read(pin);
+    LOG(LL_INFO, ("pin level  %d ", level));
     if (pull == MGOS_GPIO_PULL_UP && level == 0) n++;
     if (pull == MGOS_GPIO_PULL_DOWN && level > 0) n++;
     mgos_msleep(1);
   }
+  LOG(LL_INFO, ("button_timer_cb called n %d ", n));
   if (s_hold_timer != MGOS_INVALID_TIMER_ID) mgos_clear_timer(s_hold_timer);
   if (n > 7) mgos_provision_reset();
   if (hold > 0) mgos_gpio_enable_int(pin);
