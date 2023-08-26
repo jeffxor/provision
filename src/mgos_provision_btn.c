@@ -104,10 +104,10 @@ bool mgos_provision_btn_init(void) {
                                  50, button_down_cb, NULL);
 
     /* Start timer when button is already pressed during boot */
-    if (mgos_gpio_read(pin) != mgos_sys_config_get_provision_btn_pull_up()) {
-      LOG(LL_INFO, ("Start timer when button is already pressed during boot"));
-      button_down_cb(pin, NULL);
-    }
+    // if (mgos_gpio_read(pin) != mgos_sys_config_get_provision_btn_pull_up()) {
+    LOG(LL_INFO, ("On Boot mgos_gpio_read: %d pull_up: %d", mgos_gpio_read(pin), mgos_sys_config_get_provision_btn_pull_up()));
+      // button_down_cb(pin, NULL);
+    // }
   }
   (void) buf;
   return true;
